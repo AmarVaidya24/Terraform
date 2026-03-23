@@ -60,7 +60,7 @@ In this example:
 
 If you have a child module (e.g., network) that creates a resource group and exposes its ID, you can reference it in the root module:
 
-# Child module (modules/network/outputs.tf):
+## Child module (modules/network/outputs.tf):
 
 ```hcl
 output "resource_group_id" {
@@ -68,7 +68,7 @@ output "resource_group_id" {
 }
 ```
 
-# Root module (main.tf):
+## Root module (main.tf):
 
 ```hcl
 module "network" {
