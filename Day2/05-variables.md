@@ -4,7 +4,7 @@ Input and output variables in Terraform are essential for parameterizing and sha
 
 ## Input Variables
 
-Input variables are used to parameterize your Terraform configurations. They allow you to pass values into your modules or configurations from the outside. Input variables can be defined within a module or at the root level of your configuration. Here's how you define an input variable:
+Input and output variables in Terraform are essential for parameterizing and sharing values within your Terraform configurations and modules. They allow you to make your configurations more dynamic, reusable, and flexible. Here's how you define an input variable:
 
 ```hcl
 variable "resource_group_name" {
@@ -37,7 +37,7 @@ resource "azurerm_resource_group" "example" {
 }
 ```
 
-You reference the input variable using `var.example_var`.
+You reference the input variables using `var.resource_group_name` and `var.location`
 
 ## Output Variables
 
@@ -59,9 +59,26 @@ In this example:
 You can reference output variables in the root module or in other modules by using the syntax.
 
 ```hcl
+output "resource_group_id" {
+  description = "The ID of the created Resource Group"
+  value       = azurerm_resource_group.example.id
+}
+```
+
+In this example:
+
+- `output` declares an output variable named resource_group_id.
+
+- `description` provides a description of the output variable.
+
+- `value` specifies the attribute being exposed (the resource group’s ID).
+
+You can reference output variables in the root module or in other modules:
+
+```hcl
 output "root_output" {
   value = module.network.resource_group_id
 }
 ```
 
-This allows you to share data and values between different parts of your Terraform configuration and create more modular and maintainable infrastructure-as-code setups.
+This allows you to share data and values between different parts of your Terraform configuration and create more modular and maintainable infrastructure‑as‑code setups.
