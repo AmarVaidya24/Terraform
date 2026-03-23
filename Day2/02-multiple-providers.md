@@ -18,28 +18,29 @@ provider "azurerm" {
 }
 ```
 
-3. In your other Terraform configuration files, you can then use the aws and azurerm providers to create resources in AWS and Azure, respectively,
+3. In your other Terraform configuration files, you can then use the `aws` and `azurerm` providers to create resources in AWS and Azure, respectively,
 
 ```hcl
-resource "azurerm_resource_group" "primary_rg" {
-  name     = "rg-primary"
-  location = "eastus"
+# Create an EC2 instance in AWS
+resource "aws_instance" "example_instance" {
+  ami           = "ami-0123456789abcdef0"
+  instance_type = "t2.micro"
 }
 
-resource "azurerm_resource_group" "secondary_rg" {
-  provider = azurerm.secondary
-  name     = "rg-secondary"
-  location = "westeurope"
+# Create a Resource Group in Azure
+resource "azurerm_resource_group" "example_rg" {
+  name     = "rg-example"
+  location = "eastus"
 }
 
 ```
 
 # Explanation
 
-The first provider block configures the default Azure provider (for subscription 1).
+The **AWS provider** block configures Terraform to interact with AWS in the `us-east-1` region.
 
-The second provider block uses an alias (`secondary`) to configure another Azure provider (for subscription 2).
+The **Azure provider** block configures Terraform to interact with Azure using your subscription and tenant details.
 
-When creating resources, you can specify which provider to use with the provider argument.
+The configuration then provisions an **EC2 instance in AWS** and a **Resource Group in Azure**.
 
-This approach is useful if you need to manage resources across multiple Azure subscriptions, tenants, or regions within the same Terraform project.
+This approach is useful when you need to orchestrate infrastructure across multiple cloud providers in a single Terraform project.
