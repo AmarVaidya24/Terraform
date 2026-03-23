@@ -1,35 +1,63 @@
 # Variables Demo
 
-```hcl
 
-# Define an input variable for the EC2 instance type
-variable "instance_type" {
-  description = "EC2 instance type"
+# Define an input variable for the VM size
+variable "vm_size" {
+  description = "Azure Virtual Machine size"
   type        = string
-  default     = "t2.micro"
+  default     = "Standard_B1s"
 }
 
-# Define an input variable for the EC2 instance AMI ID
-variable "ami_id" {
-  description = "EC2 AMI ID"
+# Define an input variable for the VM admin username
+variable "admin_username" {
+  description = "Admin username for the VM"
   type        = string
+  default     = "azureuser"
 }
 
-# Configure the AWS provider using the input variables
-provider "aws" {
-  region      = "us-east-1"
+# Define an input variable for the VM admin password
+variable "admin_password" {
+  description = "Admin password for the VM"
+  type        = string
+  sensitive   = true
 }
 
-# Create an EC2 instance using the input variables
-resource "aws_instance" "example_instance" {
-  ami           = var.ami_id
-  instance_type = var.instance_type
+# Configure the Azure provider
+provider "azurerm" {
+  features {}
 }
 
-# Define an output variable to expose the public IP address of the EC2 instance
-output "public_ip" {
-  description = "Public IP address of the EC2 instance"
-  value       = aws_instance.example_instance.public_ip
+# Create a Resource Group
+resource "azurerm_resource_group" "example_rg" {
+  name     = "rg-example"
+  location = "eastus"
 }
 
-```
+# Create a Virtual Machine using the input variables
+resource "azurerm_windows_virtual_machine" "example_vm" {
+  name                = "vm-example"
+  resource_group_name = azurerm_resource_group.example_rg.name
+  location            = azurerm_resource_group.example_rg.location
+  size                = var.vm_size
+  admin_username      = var.admin_username
+  admin_password      = var.admin_password
+
+  network_interface_ids = []
+  os_disk {
+    caching              = "ReadWrite"
+    storage_account_type = "Standard_LRS"
+  }
+
+  source_image_reference {
+    publisher = "MicrosoftWindowsServer"
+    offer     = "WindowsServer"
+    sku       = "2019-Datacenter"
+    version   = "latest"
+  }
+}
+
+# Define an output variable to expose the VM ID
+output "vm_id" {
+  description = "The ID of the created Azure Virtual Machine"
+  value       = azurerm_windows_virtual_machine.example_vm.id
+}
