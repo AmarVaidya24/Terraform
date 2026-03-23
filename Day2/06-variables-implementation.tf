@@ -1,39 +1,63 @@
-# Variables Demo
-
-
-# Define an input variable for the VM size
+# Variables
 variable "vm_size" {
   description = "Azure Virtual Machine size"
   type        = string
   default     = "Standard_B1s"
 }
 
-# Define an input variable for the VM admin username
 variable "admin_username" {
   description = "Admin username for the VM"
   type        = string
   default     = "azureuser"
 }
 
-# Define an input variable for the VM admin password
 variable "admin_password" {
   description = "Admin password for the VM"
   type        = string
   sensitive   = true
 }
 
-# Configure the Azure provider
+# Provider
 provider "azurerm" {
   features {}
 }
 
-# Create a Resource Group
+# Resource Group
 resource "azurerm_resource_group" "example_rg" {
   name     = "rg-example"
   location = "eastus"
 }
 
-# Create a Virtual Machine using the input variables
+# Virtual Network
+resource "azurerm_virtual_network" "example_vnet" {
+  name                = "vnet-example"
+  address_space       = ["10.0.0.0/16"]
+  location            = azurerm_resource_group.example_rg.location
+  resource_group_name = azurerm_resource_group.example_rg.name
+}
+
+# Subnet
+resource "azurerm_subnet" "example_subnet" {
+  name                 = "subnet-example"
+  resource_group_name  = azurerm_resource_group.example_rg.name
+  virtual_network_name = azurerm_virtual_network.example_vnet.name
+  address_prefixes     = ["10.0.1.0/24"]
+}
+
+# Network Interface
+resource "azurerm_network_interface" "example_nic" {
+  name                = "nic-example"
+  location            = azurerm_resource_group.example_rg.location
+  resource_group_name = azurerm_resource_group.example_rg.name
+
+  ip_configuration {
+    name                          = "internal"
+    subnet_id                     = azurerm_subnet.example_subnet.id
+    private_ip_address_allocation = "Dynamic"
+  }
+}
+
+# Virtual Machine
 resource "azurerm_windows_virtual_machine" "example_vm" {
   name                = "vm-example"
   resource_group_name = azurerm_resource_group.example_rg.name
@@ -42,7 +66,8 @@ resource "azurerm_windows_virtual_machine" "example_vm" {
   admin_username      = var.admin_username
   admin_password      = var.admin_password
 
-  network_interface_ids = []
+  network_interface_ids = [azurerm_network_interface.example_nic.id]
+
   os_disk {
     caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
@@ -56,7 +81,7 @@ resource "azurerm_windows_virtual_machine" "example_vm" {
   }
 }
 
-# Define an output variable to expose the VM ID
+# Output
 output "vm_id" {
   description = "The ID of the created Azure Virtual Machine"
   value       = azurerm_windows_virtual_machine.example_vm.id
