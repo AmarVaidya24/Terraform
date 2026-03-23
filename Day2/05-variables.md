@@ -56,29 +56,37 @@ In this example:
 - `description` provides a description of the output variable.
 - `value` specifies the attribute being exposed (the resource group’s ID)..
 
-You can reference output variables in the root module or in other modules by using the syntax.
+## Using Outputs Across Modules
+
+If you have a child module (e.g., network) that creates a resource group and exposes its ID, you can reference it in the root module:
+
+# Child module (modules/network/outputs.tf):
 
 ```hcl
 output "resource_group_id" {
-  description = "The ID of the created Resource Group"
-  value       = azurerm_resource_group.example.id
+  value = azurerm_resource_group.network_rg.id
 }
 ```
 
-In this example:
-
-- `output` declares an output variable named resource_group_id.
-
-- `description` provides a description of the output variable.
-
-- `value` specifies the attribute being exposed (the resource group’s ID).
-
-You can reference output variables in the root module or in other modules:
+# Root module (main.tf):
 
 ```hcl
+module "network" {
+  source = "./modules/network"
+}
+
 output "root_output" {
   value = module.network.resource_group_id
 }
+
 ```
 
-This allows you to share data and values between different parts of your Terraform configuration and create more modular and maintainable infrastructure‑as‑code setups.
+This way, the root module can access the resource group ID created inside the network module.
+
+## Summary
+
+**Input variables** make your configuration flexible by allowing external values.
+
+**Output variables** expose values for reuse in other modules or the root configuration.
+
+**Module outputs** let you share data between modules, enabling modular and maintainable infrastructure‑as‑code setups.
