@@ -3,7 +3,7 @@
 You can make use of `alias` keyword to implement multi region infrastructure setup in
 terraform. this allows you to deploy resources across different Azure regions within the same project.
 
-```
+```hcl
 provider "azurerm" {
   alias           = "eastus"
   features {}

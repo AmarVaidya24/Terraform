@@ -5,7 +5,7 @@ You can use multiple providers in one single terraform project. For example,
 1. Create a `providers.tf` file in the root directory of your Terraform project.
 2. In the `providers.tf` file, define the AWS and Azure providers. For example:
 
-```
+```hcl
 provider "aws" {
   region = "us-east-1"
 }
@@ -20,7 +20,7 @@ provider "azurerm" {
 
 3. In your other Terraform configuration files, you can then use the aws and azurerm providers to create resources in AWS and Azure, respectively,
 
-```
+```hcl
 resource "azurerm_resource_group" "primary_rg" {
   name     = "rg-primary"
   location = "eastus"

@@ -32,7 +32,7 @@ By using `.tfvars` files, you can keep your Terraform code more generic and flex
 
 Step 1: Define input variables in variables.tf
 
-```
+```hcl
 variable "resource_group_name" {
   description = "Name of the Azure Resource Group"
   type        = string
