@@ -36,6 +36,11 @@ resource "azurerm_resource_group" "example_rg" {
   location = "centralindia"
 }
 
+# resource "azurerm_resource_group" "nw_rg" {
+#   name     = "NetworkWatcherRG"
+#   location = "West Europe"
+# }
+
 # Virtual Network
 resource "azurerm_virtual_network" "example_vnet" {
   name                = "vnet-example"
