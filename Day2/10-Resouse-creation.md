@@ -10,7 +10,52 @@ resource "<PROVIDER>_<TYPE>" "<NAME>" {
 }
 ```
 
-Here’s a complete Terraform example showing how to use for_each with a subnet map. This pattern lets you define multiple subnets in a single block, driven by a variable:
+```hcl
+provider "azurerm" {
+  features {
+
+  }
+  subscription_id = "8a566038-6a0a-478b-8291-25d5692f815a"
+}
+
+resource "azurerm_resource_group" "rg-hub01" {
+  name     = "rg-hub01"
+  location = "CentralIndia"
+  tags = {
+    environment = "uat"
+  }
+
+}
+```
+
+- If you change the tag values (e.g., add a new tag or update `environment = "uat"` to another value), Terraform will detect this as a resource update.
+
+```hcl
+tags = {
+  environment = "dev"
+}
+
+```
+
+- Terraform will again show a plan to update the resource group in-place.
+- The resource group itself remains the same (same name, same location), only the metadata (tags) changes.
+- Azure will apply the new tag value immediately without recreating the resource group.
+
+# Changing Location to westeurope
+
+```hcl
+location = "westeurope"
+```
+
+- Terraform treats **location** as an **immutable property** for resource groups.
+
+- This means the resource group cannot be updated in-place. Instead, Terraform will:
+  - **Destroy** the existing resource group in `CentralIndia`.
+  - **Recreate** a new resource group in `WestEurope` with the same name.
+
+---
+
+Here’s a complete Terraform example showing how to use `for_each` with a subnet map. This pattern lets you define multiple subnets in a single block, driven by a variable:
 
 ```hcl
 
