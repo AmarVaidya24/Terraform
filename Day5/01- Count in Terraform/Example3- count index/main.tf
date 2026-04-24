@@ -1,6 +1,6 @@
 resource "azurerm_resource_group" "arg" {
   count    = 3
-  name     = "example3-rg"
+  name     = "example3-rg-${count.index + 1}"
   location = "East US"
 }
 

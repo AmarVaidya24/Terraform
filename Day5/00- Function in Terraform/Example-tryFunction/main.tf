@@ -7,8 +7,10 @@ variable "example_map" {
     key2 = "value2"
   }
 }
+
 output "try_example" {
   value = try(var.example_map["non_existent_key"], "default_value")
+  #value = var.example_map["key3"] # This will throw an error because key3 does not exist in the map
 }
 
 # another Example of try block in terraform

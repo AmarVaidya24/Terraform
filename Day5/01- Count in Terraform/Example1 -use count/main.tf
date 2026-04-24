@@ -6,7 +6,6 @@ resource "azurerm_resource_group" "rg2" {
   name     = "ResourceGroup2"
   location = "westus"
 }
-
 resource "azurerm_resource_group" "rg3" {
   name     = "ResourceGroup3"
   location = "westus"
@@ -16,7 +15,7 @@ resource "azurerm_resource_group" "rg3" {
 
 resource "azurerm_resource_group" "rgs" {
   count    = 3
-  name     = "ResourceGroup2-${count.index + 1}"
+  name     = "ResourceGroup-${count.index + 1}"
   location = "westus"
 }
 

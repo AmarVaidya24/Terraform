@@ -11,3 +11,7 @@ output "vm_location" {
   description = "The location of the created Azure Virtual Machine"
   value       = azurerm_windows_virtual_machine.example_vm.location
 }
+output "vm_size" {
+  description = "The size of the created Azure Virtual Machine"
+  value       = azurerm_windows_virtual_machine.example_vm.size
+}
