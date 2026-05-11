@@ -1,12 +1,12 @@
 # Resource Group
 resource "azurerm_resource_group" "example_rg" {
-  name     = "rg-example"
-  location = "centralindia"
+  name     = var.rg_name
+  location = var.location
 }
 
 # Virtual Network
 resource "azurerm_virtual_network" "example_vnet" {
-  name                = "vnet-example"
+  name                = "${var.vm_name}-vnet"
   address_space       = ["10.0.0.0/16"]
   location            = azurerm_resource_group.example_rg.location
   resource_group_name = azurerm_resource_group.example_rg.name
@@ -14,7 +14,7 @@ resource "azurerm_virtual_network" "example_vnet" {
 
 # Subnet
 resource "azurerm_subnet" "example_subnet" {
-  name                 = "subnet-example"
+  name                 = "${var.vm_name}-subnet"
   resource_group_name  = azurerm_resource_group.example_rg.name
   virtual_network_name = azurerm_virtual_network.example_vnet.name
   address_prefixes     = ["10.0.1.0/24"]
@@ -24,7 +24,7 @@ resource "azurerm_subnet" "example_subnet" {
 
 # Network Interface
 resource "azurerm_network_interface" "example_nic" {
-  name                = "nic-example"
+  name                = "${var.vm_name}-nic"
   location            = azurerm_resource_group.example_rg.location
   resource_group_name = azurerm_resource_group.example_rg.name
 
@@ -37,7 +37,7 @@ resource "azurerm_network_interface" "example_nic" {
 
 # Virtual Machine
 resource "azurerm_windows_virtual_machine" "example_vm" {
-  name                = "vm-example"
+  name                = var.vm_name
   resource_group_name = azurerm_resource_group.example_rg.name
   location            = azurerm_resource_group.example_rg.location
   size                = var.vm_size

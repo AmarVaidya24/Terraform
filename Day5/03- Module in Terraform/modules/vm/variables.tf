@@ -1,4 +1,16 @@
 # Variables
+variable "rg_name" {
+  description = "Name of the resource group"
+  type        = string
+}
+variable "location" {
+  description = "Azure location for resources"
+  type        = string
+}
+variable "vm_name" {
+  description = "Name of the Virtual Machine"
+  type        = string
+}
 variable "vm_size" {
   description = "Azure Virtual Machine size"
   type        = string

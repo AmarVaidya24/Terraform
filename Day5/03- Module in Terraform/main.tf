@@ -1,5 +1,5 @@
 module "windows_vm" {
-  source              = "./modules/windows-vm"
+  source              = "./modules/vm"
   rg_name             = var.rg_name
   location            = var.location
   vm_name             = var.vm_name
