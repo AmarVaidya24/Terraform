@@ -1,4 +1,4 @@
-# if we dont want to create resouce groups, we can set the count to 0
+# if we dont want to create resource groups, we can set the count to 0
 resource "azurerm_resource_group" "arg" {
   count    = 3
   name     = "example4-rg-${count.index + 1}"

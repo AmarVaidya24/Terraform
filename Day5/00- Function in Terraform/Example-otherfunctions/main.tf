@@ -36,11 +36,11 @@ output "contains_example" {
 }
 # 7. Using the `max` function to get the maximum value from a list of numbers
 output "max_example" {
-  value = max([1, 2, 3, 4, 5])
+  value = max(1, 2, 3, 4, 5)
 }
 # 8. Using the `min` function to get the minimum value from a list of numbers
 output "min_example" {
-  value = min([1, 2, 3, 4, 5])
+  value = min(1, 2, 3, 4, 5)
 }
 # 9. Using the `concat` function to concatenate two lists into a single list
 output "concat_example" {

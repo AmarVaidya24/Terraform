@@ -3,6 +3,17 @@ resource "azurerm_resource_group" "this" {
   location = var.location
 }
 
+resource "azurerm_network_interface" "this" {
+  name                = "${var.vm_name}-nic"
+  resource_group_name = azurerm_resource_group.this.name
+  location            = var.location
+
+  ip_configuration {
+    name                          = "internal"
+    private_ip_address_allocation = "Dynamic"
+  }
+}
+
 resource "azurerm_windows_virtual_machine" "this" {
   name                = var.vm_name
   resource_group_name = azurerm_resource_group.this.name
@@ -11,7 +22,7 @@ resource "azurerm_windows_virtual_machine" "this" {
   admin_username      = var.admin_username
   admin_password      = var.admin_password
 
-  network_interface_ids = []
+  network_interface_ids = [azurerm_network_interface.this.id]
 
   os_disk {
     caching              = "ReadWrite"

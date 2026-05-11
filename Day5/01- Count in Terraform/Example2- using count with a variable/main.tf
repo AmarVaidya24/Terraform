@@ -11,7 +11,7 @@ resource "azurerm_resource_group" "rg5" {
   location = "westus"
 }
 
-# how to referrence the resources created with count
+# how to reference the resources created with count
 output "rg2_names" {
   value = [for i in azurerm_resource_group.rg5 : i.name]
 }
