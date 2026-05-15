@@ -1,0 +1,6 @@
+prefix = "demo"
+resource_group_name = "rg-demo-hub-spoke"
+location = "westeurope"
+sql_admin = "sqladminuser"
+# change the password before applying
+sql_password = "P@ssw0rd1234!"

@@ -20,4 +20,13 @@ resource "azurerm_virtual_network" "example_vnet" {
     command     = "Write-Host \"Virtual Network created successfully! ${azurerm_virtual_network.example_vnet.name}\""
   }
 
+  # remote-exec provisioner can be used to run a script on the virtual machine after it is created, but in this case we are using it to print the name of the virtual network after it is created, which is not the intended use of remote-exec, but it is just for demonstration purposes.
+  # the remote-exec provisioner will run on the machine where terraform is being executed, so it will not have access to the virtual network resource, but it will still print the name of the virtual network after it is created.
+  provisioner "remote-exec" {
+    inline = [
+      "Write-Host \"Virtual Network created successfully! ${azurerm_virtual_network.example_vnet.name}\""
+    ]
+
+  }
+
 }
