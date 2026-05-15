@@ -306,7 +306,7 @@ resource "azurerm_network_security_rule" "allow_backend_to_sql" {
 ########################################################################
 # Azure SQL Server + Database (example)
 ########################################################################
-resource "azurerm_sql_server" "sql" {
+resource "azurerm_mssql_server" "sql" {
   name                         = "${var.prefix}-sqlsrv"
   resource_group_name          = azurerm_resource_group.rg.name
   location                     = azurerm_resource_group.rg.location
@@ -316,18 +316,15 @@ resource "azurerm_sql_server" "sql" {
 }
 
 # Allow Azure services (including VNet resources) to access the SQL server
-resource "azurerm_sql_firewall_rule" "allow_azure_services" {
-  name                = "AllowAzureServices"
-  resource_group_name = azurerm_resource_group.rg.name
-  server_name         = azurerm_sql_server.sql.name
-  start_ip_address    = "0.0.0.0"
-  end_ip_address      = "0.0.0.0"
+resource "azurerm_mssql_firewall_rule" "allow_azure_services" {
+  name             = "AllowAzureServices"
+  server_id        = azurerm_mssql_server.sql.id
+  start_ip_address = "0.0.0.0"
+  end_ip_address   = "0.0.0.0"
 }
 
-resource "azurerm_sql_database" "sqldb" {
-  name                = "${var.prefix}-sqldb"
-  resource_group_name = azurerm_resource_group.rg.name
-  location            = azurerm_resource_group.rg.location
-  server_name         = azurerm_sql_server.sql.name
-  sku_name            = "Basic"
+resource "azurerm_mssql_database" "sqldb" {
+  name      = "${var.prefix}-sqldb"
+  server_id = azurerm_mssql_server.sql.id
+  sku_name  = "Basic"
 }
