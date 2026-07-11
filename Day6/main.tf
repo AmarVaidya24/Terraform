@@ -24,14 +24,3 @@ resource "azurerm_storage_container" "container" {
   storage_account_name  = azurerm_storage_account.storage.name
   container_access_type = "private"
 }
-
-# Output the storage account connection string (sensitive)
-output "storage_account_id" {
-  value       = azurerm_storage_account.storage.id
-  description = "ID of the storage account"
-}
-
-output "storage_container_name" {
-  value       = azurerm_storage_container.container.name
-  description = "Name of the storage container"
-}
