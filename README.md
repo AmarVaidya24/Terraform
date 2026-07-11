@@ -140,6 +140,38 @@ Terraform Course
     - `terraform.tfvars.example` - Example values
     - `README.md` - Architecture documentation
 
+### **Day 6: Azure Pipelines & CI/CD Deployment**
+
+- **Location:** `Day6/`
+- **Topics Covered:**
+  - Azure Pipeline configuration for Terraform
+  - CI/CD workflow with multiple stages
+  - Environment-based deployments (Dev and Prod)
+  - Terraform state management in pipeline
+  - Security best practices for Terraform in pipelines
+- **Key Files:**
+  - `providers.tf` - Azure provider configuration
+  - `variables.tf` - Input variable definitions
+  - `main.tf` - Resource definitions (Resource Group, Storage Account, Container)
+  - `outputs.tf` - Output values
+  - `terraform.tfvars` - Example variable values
+  - `azure-pipelines.yml` - CI/CD pipeline configuration
+  - `README.md` - Complete setup and usage guide
+- **Pipeline Stages:**
+  1. **Validate** - Terraform format and syntax validation
+  2. **Plan** - Generate and publish deployment plan
+  3. **Deploy to Development** - Automated deployment to dev
+  4. **Deploy to Production** - Manual approval gate for production
+- **Resources Created:**
+  - Azure Resource Group
+  - Azure Storage Account
+  - Storage Container for blob storage
+- **Pipeline Features:**
+  - Remote state management using Azure Storage backend
+  - Multi-stage deployment with approval gates
+  - Artifact publishing for plan review
+  - Security best practices (sensitive variables, RBAC)
+
 ---
 
 ## Getting Started
